@@ -93,14 +93,14 @@ void Stack<T>::push(const T& value) {
 template <typename T>
 void Stack<T>::push(T&& value) {
   static_assert(std::is_move_constructible<T>::value);
-  head_ = new Node{::std::move(value), head_};
+  head_ = new Node{std::move(value), head_};
   ++size_;
 }
 
 template <typename T>
 template <typename... Args_T>
-void Stack<T>::push_emplace(Args_T&&... args) {
-  head_ = new Node{T{::std::forward<Args_T>(args)...}, head_};
+void Stack<T>::push_emplace(Args_T&&... value) {
+  head_ = new Node{T{std::forward<Args_T>(value)...}, head_};
   ++size_;
 }
 
