@@ -52,9 +52,10 @@ Stack<T>::~Stack() {
 }
 
 template <typename T>
-Stack<T>::Stack(Stack&& stack) noexcept
-    : size_(std::exchange(stack.size_, 0)),
-      head_(std::exchange(stack.head_, nullptr)) {}
+Stack<T>::Stack(Stack&& stack) noexcept {
+  size_ = std::move(stack.size_);
+  head_ = std::move(stack.head_);
+}
 
 template <typename T>
 Stack<T>& Stack<T>::operator=(Stack&& stack) noexcept {
@@ -85,14 +86,12 @@ const T& Stack<T>::head() const {
 
 template <typename T>
 void Stack<T>::push(const T& value) {
-  static_assert(std::is_copy_constructible<T>::value);
   head_ = new Node{value, head_};
   ++size_;
 }
 
 template <typename T>
 void Stack<T>::push(T&& value) {
-  static_assert(std::is_move_constructible<T>::value);
   head_ = new Node{std::move(value), head_};
   ++size_;
 }
